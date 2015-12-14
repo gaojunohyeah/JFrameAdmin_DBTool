@@ -1,0 +1,19 @@
+/**
+ * {{ tableBean.name }}Manager.js
+ * Created by auto tool.
+ */
+
+'use strict';
+
+/**
+ * {{ tableBean.comment }}管理器
+ *
+ * @constructor
+ */
+var {{ tableBean.name }}Manager = function () {
+  var _this = this;
+
+
+};
+
+module.exports = new {{ tableBean.name }}Manager();
