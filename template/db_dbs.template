@@ -8,8 +8,8 @@
 var Sequelize = require('sequelize');
 var Redis = require('ioredis');
 
-{% for name in dbNames -%}
-var {{ name.lower() }} = require(config.serverRoot + "/model/{{ name }}");
+{% for tableBean in tableBeans -%}
+var {{ tableBean.name.lower() }} = require(config.serverRoot + "/model/{{ tableBean.name }}");
 {% endfor %}
 
 // mysql 连接
@@ -27,6 +27,21 @@ function loadMysql() {
   });
 }
 
+// 服务器(非admin) mysql 连接
+function loadServerMysql() {
+  return new Sequelize(config.DB_SERVER_dbname, config.DB_SERVER_username, config.DB_SERVER_password, {
+    host: config.DB_SERVER_host,
+    port: config.DB_SERVER_port,
+    dialect: config.DB_SERVER_dialect,
+
+    pool: {
+      max: config.DB_SERVER_maxpool,
+      min: config.DB_SERVER_minpool,
+      idle: 10000
+    }
+  });
+}
+
 // redis 连接
 function loadRedis() {
   return new Redis(config.RD_port, config.RD_host);
@@ -39,8 +54,14 @@ exports.redis = loadRedis();
 // 数据库连接以及连接池
 var sequelize = loadMysql();
 exports.sequelize = sequelize;
+var serverSequelize = loadServerMysql();
+exports.serverSequelize = serverSequelize;
 
 // model映射
-{% for name in dbNames -%}
-exports.{{ name }} = {{ name.lower() }}.{{ name }}(sequelize);
+{% for tableBean in tableBeans -%}
+{% if tableBean.isAdmin -%}
+exports.{{ tableBean.name }} = {{ tableBean.name.lower() }}.{{ tableBean.name }}(sequelize);
+{%- else -%}
+exports.{{ tableBean.name }} = {{ tableBean.name.lower() }}.{{ tableBean.name }}(serverSequelize);
+{%- endif %}
 {% endfor %}

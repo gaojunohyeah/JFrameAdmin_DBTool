@@ -54,8 +54,9 @@ def loadDBFile(path):
     # 获取表信息
     name = root.getAttribute('name')
     comment = root.getAttribute('comment')
+    isAdmin = root.getAttribute('isAdmin')
 
-    tableBean = TableBean.TableBean(name, comment)
+    tableBean = TableBean.TableBean(name, comment, isAdmin)
 
     # 表名唯一性验证
     if TableNameDic.get(name):

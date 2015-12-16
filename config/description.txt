@@ -2,6 +2,7 @@
   数据库表信息
   name:     表名
   comment:  表的描述
+  isAdmin:  是否是gm表，默认不填为false
 
 2.column标签:
   数据库字段信息
