@@ -9,7 +9,7 @@
     <column name="key" field="key" type="string" length="20" comment="型号"
             value="" allowNull="false" unique="false"/>
 
-    <column name="emission" field="emission" type="int" length="10" comment="排量"
+    <column name="emission" field="emission" type="double" length="10" comment="排量"
             value="0" allowNull="true" unique="false"/>
 
     <column name="emissionType" field="emissionType" type="int" length="2" comment="排放标准"
